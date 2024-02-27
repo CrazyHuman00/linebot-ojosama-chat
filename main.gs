@@ -8,9 +8,13 @@ const OPEN_AI_KEY = PropertiesService.getScriptProperties().getProperty("OPEN_AI
 function doPost(e) {
   json = JSON.parse(e.postData.contents);
 
-  replyToken= json.events[0].replyToken;
+  var replyToken = json.events[0].replyToken;
   if (typeof replyToken === 'undefined') {
     return;
   }
+
+  var receiveMessage = json.events[0].message.text;
+  
+
   
 }
