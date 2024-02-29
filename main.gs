@@ -15,6 +15,13 @@ function doPost(e) {
 
   var receiveMessage = json.events[0].message.text;
   
+  // ============= debug =============
+  let sheetSettings = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Setting");
+  sheetSettings.getRange(4, 2).setValue(receiveMsg);
+  sheetSettings.getRange(5, 2).setValue(fromLineData);
+  // =================================
+
+  
 
   
 }
