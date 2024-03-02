@@ -21,7 +21,10 @@ function doPost(e) {
   sheetSettings.getRange(5, 2).setValue(fromLineData);
   // =================================
 
+  let sheet = SpreadsheetApp.getActiveSpreadsheet();
+  let settingSheet = new Sheet(sheet.getSheetByName('Setting'), 1, 2);
   
+
 
   
 }
