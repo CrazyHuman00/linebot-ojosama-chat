@@ -4,52 +4,68 @@ const OPENAI_APIKEY = PropertiesService.getScriptProperties().getProperty("OPEN_
 
 /**
  * debug用の関数
+ * NOTE: doPost関数はそのままでは実行できないため、仮に設置した関数
  */
 function debugFunction()
 {
-  let settingSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Setting");
-
-  let model = settingSheet.getRange("B1").getValue();
-  let botCharacter = settingSheet.getRange("B2").getValue();
+  let settingSheet = new Sheet(SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Setting"));
+  let model = settingSheet.getRangeValues("B1");
+  let botCharacter = settingSheet.getRangeValues("B2");
 
   console.log(model, botCharacter);
   
-
-
 }
 
 /**
  * doPost
  */
 function doPost(e) {
-  json = JSON.parse(e.postData.contents);
+  let fromLineData = e.postData.contents;
+  let receiveData = JSON.parse(fromLineData);
+  let receiveMessage = receiveData.events[0].message.text;
+  let replyToken = receiveData.events[0].replyToken;
 
-  var replyToken = json.events[0].replyToken;
-  if (typeof replyToken === 'undefined') {
-    return;
-  }
+  // modelとcharacterを読み込み、スプレッドシートに値を書き込む
+  // let replyMessage = myFunction(receiveMessage);
 
-  var userMessage = json.events[0].message.text;
-  
-  // ============= debug =============
-  let sheetSettings = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Setting");
-  sheetSettings.getRange(4, 2).setValue(receiveMsg);
-  sheetSettings.getRange(5, 2).setValue(fromLineData);
-  // =================================
+  // reply関数を呼ぶ
+  // reply(replyToken, replyMessage);
 
-  let settingSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Setting");
-  let model = settingSheet.getRange("B1").getValue();
-  let botCharacter = settingSheet.getRange("B2").getValue();
+  // forgotData関数を呼ぶ
+  // forgotData();
 
-  const prompt = userMessage;
+  // ==================================
+  // modelとcharacterを読み込み、スプレッドシートに値を書き込む
+  const settingSheet = new Sheet(SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Setting"));
+  let model = settingSheet.getRangeValues("B1");
+  let botCharacter = settingSheet.getRangeValues("B2");
+
+  // ユーザーからのメッセージをスプレッドシートに書き込む
+  setCellValueUserPrompt(receiveMessage);
 
   // メッセージを作成する
-  requestOptions = createMessage(OPENAI_APIKEY, model, botCharacter, prompt);
-  const response = UrlFetchApp.fetch("https://api.openai.com/v1/chat/completions", requestOptions);
-  const responseText = response.getContentText();
-  const json = JSON.parse(responseText);
-  const text = json['choices'][0]['message']['content'].trim();
+  var createdMessage = createMessage(botCharacter);
 
-  // メッセージの送信
-  reply(text);
+  // メッセージを元に返信をする
+
+  
+
+}
+
+
+function myFunction(receiveMessage) {
+  // setCellValueUserPrompt関数を呼び出す
+  setCellValueUserPrompt(receiveMessage);
+
+  // fncCreateMessage関数を呼び出す
+  let createdMessage = fncCreateMessage(botCharacter);
+
+  // fncCallApi関数を呼び出す
+  let botAnswer = callAPI(createdMessage, model);
+
+  // setCellValue関数を呼び出す
+  setCellValue(botAnswer);
+
+  console.log(botAnswer);
+  return(botAnswer);
 }
