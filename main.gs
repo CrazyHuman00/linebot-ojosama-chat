@@ -8,11 +8,17 @@ const OPENAI_APIKEY = PropertiesService.getScriptProperties().getProperty("OPEN_
  */
 function debugFunction()
 {
-  let settingSheet = new Sheet(SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Setting"));
-  let model = settingSheet.getRangeValues("B1");
-  let botCharacter = settingSheet.getRangeValues("B2");
+  let settingSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Setting");
+  let dataSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Data");
+  let model = settingSheet.getRange("B1").getValue();
+  let botCharacter = settingSheet.getRange("B2").getValue();
 
   console.log(model, botCharacter);
+
+  var receiveMessage = "aaaaa";
+
+  setCellValueUserPrompt(receiveMessage);
+  // var createdMessage = createMessage(botCharacter);
   
 }
 
