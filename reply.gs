@@ -4,8 +4,8 @@
 function reply(LINE_CHANNEL_ACCESS_TOKEN, replyToken, replyMessage){
   let replyUrl = "https://api.line.me/v2/bot/message/reply";
   let contents = {
-          replyToken: replyToken,
-          messages: [{ type: 'text', text: replyMessage }],
+    replyToken: replyToken,
+    messages: [{ type: 'text', text: replyMessage }],
   };
   let options = {
     method: 'post',

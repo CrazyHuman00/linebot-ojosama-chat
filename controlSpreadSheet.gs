@@ -7,8 +7,10 @@
  */
 function setCellValueUserPrompt(userPrompt) {
   let sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Data");
-  var lastRow = sheet.getLastRow();
-  sheet.getRange(lastRow + 1, 1).setValue(userPrompt);
+  var data = sheet.getRange("A1:A").getValues();
+  var lastRow = data.filter(String).length;
+  // console.log(lastRow);
+  sheet.getRange(lastRow + 1,1).setValue(userPrompt);
 }
 
 /**
@@ -18,6 +20,8 @@ function setCellValueUserPrompt(userPrompt) {
  */
 function setCellValueBotAnswer(botAnswer) {
   let sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Data");
-  var lastRow = sheet.getLastRow();
-  sheet.getRange(lastRow + 1, 2).setValue(userPrompt);
+  var data = sheet.getRange("B1:B").getValues();
+  var lastRow = data.filter(String).length;
+  sheet.getRange(lastRow + 1,2).setValue(botAnswer);
 }
+

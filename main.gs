@@ -8,17 +8,9 @@ const OPENAI_APIKEY = PropertiesService.getScriptProperties().getProperty("OPEN_
  */
 function debugFunction()
 {
-  let settingSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Setting");
-  let dataSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Data");
-  let model = settingSheet.getRange("B1").getValue();
-  let botCharacter = settingSheet.getRange("B2").getValue();
+  var receiveMessage = "今日何しよ";
 
-  console.log(model, botCharacter);
-
-  var receiveMessage = "aaaaa";
-
-  setCellValueUserPrompt(receiveMessage);
-  // var createdMessage = createMessage(botCharacter);
+  myFunction(receiveMessage);
   
 }
 
@@ -26,52 +18,38 @@ function debugFunction()
  * doPost
  */
 function doPost(e) {
-  let fromLineData = e.postData.contents;
-  let receiveData = JSON.parse(fromLineData);
-  let receiveMessage = receiveData.events[0].message.text;
-  let replyToken = receiveData.events[0].replyToken;
+  var json = JSON.parse(e.postData.contents);
+  var reply_token = json.events[0].replyToken;
+  if (typeof reply_token === 'undefined') {
+    return;
+  }
+  var userMessage = json.events[0].message.text;
 
-  // modelとcharacterを読み込み、スプレッドシートに値を書き込む
-  // let replyMessage = myFunction(receiveMessage);
+  myFunction(userMessage)
+}
 
-  // reply関数を呼ぶ
-  // reply(replyToken, replyMessage);
-
-  // forgotData関数を呼ぶ
-  // forgotData();
-
-  // ==================================
-  // modelとcharacterを読み込み、スプレッドシートに値を書き込む
-  const settingSheet = new Sheet(SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Setting"));
-  let model = settingSheet.getRangeValues("B1");
-  let botCharacter = settingSheet.getRangeValues("B2");
+/**
+ * myFunction
+ * 送信されたメッセージを元にボットの回答を作成する一連の処理を行うメソッド
+ */
+function myFunction(receiveMessage)
+{
+  // settingから応答に必要なプロンプトを持ってくる
+  const settingSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Setting");
+  let model = settingSheet.getRange("B1").getValue();
+  let botCharacter = settingSheet.getRange("B2").getValue();
 
   // ユーザーからのメッセージをスプレッドシートに書き込む
   setCellValueUserPrompt(receiveMessage);
 
   // メッセージを作成する
-  var createdMessage = createMessage(botCharacter);
+  var botAnswer = createMessage(receiveMessage, model, botCharacter);
+  console.log(botAnswer);
+
+  //　Botからのメッセージをスプレッドシートに書き込む
+  setCellValueBotAnswer(botAnswer);
+  
 
   // メッセージを元に返信をする
 
-  
-
-}
-
-
-function myFunction(receiveMessage) {
-  // setCellValueUserPrompt関数を呼び出す
-  setCellValueUserPrompt(receiveMessage);
-
-  // fncCreateMessage関数を呼び出す
-  let createdMessage = fncCreateMessage(botCharacter);
-
-  // fncCallApi関数を呼び出す
-  let botAnswer = callAPI(createdMessage, model);
-
-  // setCellValue関数を呼び出す
-  setCellValue(botAnswer);
-
-  console.log(botAnswer);
-  return(botAnswer);
 }
