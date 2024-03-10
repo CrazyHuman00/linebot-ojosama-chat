@@ -13,6 +13,7 @@ function setCellValueUserPrompt(userPrompt)
   sheet.getRange(lastRow + 1,1).setValue(userPrompt);
 }
 
+
 /**
  * スプレッドシートに値を書き込む関数(ボットの応答)
  * @param {sheet} sheet - データシート
@@ -26,9 +27,21 @@ function setCellValueBotAnswer(botAnswer) {
 }
 
 
+/**
+ * 指定されたターン数になるとスプレッドシートに書かれた会話を白紙にする
+ */
 function forgotData() 
 {
-  let sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Data");
-  
+  let settingSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Setting");
+  let dataSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Data");
+
+  let maxNumberOfTurns = settingSheet.getRange("B3").getValue();
+  let lastRow = dataSheet.getRange("B:B").getValues().filter(String).length;
+
+  // 一番上の行を除くA2,B2からA4,B4を消す
+  if (lastRow > maxNumberOfTurns)
+  {
+    dataSheet.getRange("A2:B6").clear();
+  }
 }
 

@@ -1,4 +1,5 @@
 // とりあえず自分専用
+// TODO: 複数ユーザが使えるようにスプレッドシートをユーザidごとに分けるシステムを構築
 
 /**
  * debug用の関数
@@ -11,6 +12,8 @@ function debugFunction()
   var botMessage = generateResponseFromMessage(receiveMessage);
 
   console.log(botMessage);
+
+  forgotData();
   
 }
 
@@ -30,6 +33,8 @@ function doPost(e)
   var botAnswer = generateResponseFromMessage(userMessage);
 
   reply(reply_token, botAnswer);
+
+  forgotData();
 }
 
 

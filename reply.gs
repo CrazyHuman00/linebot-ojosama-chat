@@ -1,5 +1,7 @@
 /**
- * LINEへの返信
+ * LINEへ返信するメソッド
+ * @param {replyToken} replyToken - トークン
+ * @param {replyMessage} botAnswer - botの応答
  */
 function reply(replyToken, replyMessage)
 {
