@@ -5,11 +5,11 @@
  * @param {sheet} sheet - データシート
  * @param {userPrompt} userPrompt - ユーザの入力
  */
-function setCellValueUserPrompt(userPrompt) {
+function setCellValueUserPrompt(userPrompt) 
+{
   let sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Data");
   var data = sheet.getRange("A1:A").getValues();
   var lastRow = data.filter(String).length;
-  // console.log(lastRow);
   sheet.getRange(lastRow + 1,1).setValue(userPrompt);
 }
 
@@ -23,5 +23,12 @@ function setCellValueBotAnswer(botAnswer) {
   var data = sheet.getRange("B1:B").getValues();
   var lastRow = data.filter(String).length;
   sheet.getRange(lastRow + 1,2).setValue(botAnswer);
+}
+
+
+function forgotData() 
+{
+  let sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Data");
+  
 }
 

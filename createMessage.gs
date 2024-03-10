@@ -23,7 +23,8 @@ function createMessage(userMessage, model, botCharacter) {
 /**
  * openAIのAPIを呼び出す関数
  */
-function callAPI(botMessage, model) {
+function callAPI(botMessage, model) 
+{
   const OPENAI_APIKEY = PropertiesService.getScriptProperties().getProperty("OPEN_AI_KEY");
   console.log(OPENAI_APIKEY);
   console.log(model);

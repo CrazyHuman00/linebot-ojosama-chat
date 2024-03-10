@@ -1,7 +1,9 @@
 /**
  * LINEへの返信
  */
-function reply(LINE_CHANNEL_ACCESS_TOKEN, replyToken, replyMessage){
+function reply(replyToken, replyMessage)
+{
+  const LINE_CHANNEL_ACCESS_TOKEN = PropertiesService.getScriptProperties().getProperty("LINE_CHANNEL_ACCESS_TOKEN");
   let replyUrl = "https://api.line.me/v2/bot/message/reply";
   let contents = {
     replyToken: replyToken,
